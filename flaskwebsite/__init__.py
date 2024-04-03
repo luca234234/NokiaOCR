@@ -3,7 +3,7 @@ from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from authlib.integrations.flask_client import OAuth
-from config import Config
+from flaskwebsite.config import Config
 from flask_mail import Mail
 
 db = SQLAlchemy()
