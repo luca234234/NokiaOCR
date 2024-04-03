@@ -3,7 +3,7 @@ from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from authlib.integrations.flask_client import OAuth
-from flaskwebsite.config import Config
+from config import Config
 from flask_mail import Mail
 
 db = SQLAlchemy()
@@ -14,10 +14,11 @@ oauth = OAuth()
 
 def create_app(config_class=Config):
     app = Flask(__name__)
-
+    app.config.from_object(config_class)
     CORS(app, supports_credentials=True)
     app.secret_key = config_class.SECRET_KEY
     db.init_app(app)
+    print("hello")
     login_manager.init_app(app)
     login_manager.session_protection = "strong"
     mail.init_app(app)
@@ -37,3 +38,5 @@ def create_app(config_class=Config):
 
     app.register_blueprint(user)
     app.register_blueprint(main)
+
+    return app

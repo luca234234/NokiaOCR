@@ -1,7 +1,7 @@
 import random
 import string
 from flask import request, jsonify, current_app, Blueprint
-from utils import hash_password, validate_email, validate_username, send_verification_email
+from user.utils import hash_password, validate_email, validate_username, send_verification_email
 from flask_login import login_user, logout_user, login_required, current_user
 from models import User
 from itsdangerous import URLSafeTimedSerializer
@@ -14,7 +14,7 @@ user = Blueprint('user', __name__)
 def verify_email(token):
     serializer = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])
     try:
-        email = serializer.loads(token, salt=current_app.config['SECURITY_PASSWORD_SALT'], max_age=3600)  # 1 hour validity
+        email = serializer.loads(token, salt=current_app.config['SECURITY_PASSWORD_SALT'], max_age=3600)
         user = User.query.filter_by(email=email).first()
         user.email_confirmed = True
         db.session.commit()
