@@ -1,7 +1,7 @@
 from flask import request, jsonify, Blueprint
 from flask_login import login_required, current_user
 import pytesseract
-from models import Data
+from flaskwebsite.models import Data
 from PIL import Image
 import io
 from flaskwebsite import db

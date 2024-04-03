@@ -1,6 +1,6 @@
 import hashlib
 from flask import current_app, url_for
-from models import User
+from flaskwebsite.models import User
 from itsdangerous import URLSafeTimedSerializer
 from flask_mail import Message
 from flaskwebsite import mail

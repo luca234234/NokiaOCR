@@ -1,9 +1,9 @@
 import random
 import string
 from flask import request, jsonify, current_app, Blueprint
-from user.utils import hash_password, validate_email, validate_username, send_verification_email
+from flaskwebsite.user.utils import hash_password, validate_email, validate_username, send_verification_email
 from flask_login import login_user, logout_user, login_required, current_user
-from models import User
+from flaskwebsite.models import User
 from itsdangerous import URLSafeTimedSerializer
 from flaskwebsite import db, oauth
 
