@@ -5,12 +5,13 @@ from flask_login import LoginManager
 from authlib.integrations.flask_client import OAuth
 from flaskwebsite.config import Config
 from flask_mail import Mail
+from flask_migrate import Migrate
 
 db = SQLAlchemy()
 login_manager = LoginManager()
 mail = Mail()
 oauth = OAuth()
-
+migrate = Migrate()
 
 def create_app(config_class=Config):
     app = Flask(__name__)
@@ -18,6 +19,7 @@ def create_app(config_class=Config):
     CORS(app, supports_credentials=True)
     app.secret_key = config_class.SECRET_KEY
     db.init_app(app)
+    migrate.init_app(app, db)
     login_manager.init_app(app)
     login_manager.session_protection = "strong"
     mail.init_app(app)
