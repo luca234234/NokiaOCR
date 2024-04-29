@@ -18,7 +18,6 @@ def create_app(config_class=Config):
     CORS(app, supports_credentials=True)
     app.secret_key = config_class.SECRET_KEY
     db.init_app(app)
-    print("hello")
     login_manager.init_app(app)
     login_manager.session_protection = "strong"
     mail.init_app(app)

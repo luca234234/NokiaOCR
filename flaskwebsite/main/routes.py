@@ -2,6 +2,7 @@ from flask import request, jsonify, Blueprint
 from flask_login import login_required, current_user
 import pytesseract
 from flaskwebsite.models import Data
+from flaskwebsite.main.utils import extract_data
 from PIL import Image
 import io
 from flaskwebsite import db
@@ -22,7 +23,8 @@ def ocr_photo():
     try:
         image = Image.open(io.BytesIO(file.read()))
         ocr_result = pytesseract.image_to_string(image)
-        post = Data(content=ocr_result, user=current_user)
+        fields = extract_data(ocr_result)
+        post = Data(fields=fields, user=current_user)
         db.session.add(post)
         db.session.commit()
         return jsonify({'message': 'OCR success', 'status': 'ok', 'data': ocr_result}), 200

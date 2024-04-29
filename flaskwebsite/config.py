@@ -3,11 +3,11 @@ import os
 
 class Config:
     FLASK_APP = 'flaskwebsite'
-    SECRET_KEY = 'your_secret_key'
-    SQLALCHEMY_DATABASE_URI = 'postgresql://username:password@localhost/databasename'
+    SECRET_KEY = '5XqCiHJlxk2pNUIO2Zz46NPnFAGqbNXi'
+    SQLALCHEMY_DATABASE_URI = 'postgresql://admin:helloiamadmin@postgres_db:5432/nokia_ocr'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SECURITY_PASSWORD_SALT = 'your_password_salt'
-    MAIL_SERVER = 'your_mail_server'
+    MAIL_SERVER = 'smtp.googlemail.com'
     MAIL_PORT = 465
     MAIL_USE_SSL = True
     MAIL_USERNAME = 'your_email'

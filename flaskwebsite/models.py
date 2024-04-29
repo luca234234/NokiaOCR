@@ -34,12 +34,34 @@ class Data(db.Model):
     __tablename__ = 'data'
 
     id = db.Column(db.Integer, primary_key=True)
-    content = db.Column(db.Text, nullable=False)
+    series = db.Column(db.String(2))
+    number = db.Column(db.String(6))
+    first_name = db.Column(db.String(50))
+    last_name = db.Column(db.String(50))
+    gender = db.Column(db.String(1))
+    place_of_birth = db.Column(db.String(100))
+    address = db.Column(db.String(255))
+    issued_by = db.Column(db.String(100))
+    issue_date = db.Column(db.Date)
+    expiry_date = db.Column(db.Date)
+    nationality = db.Column(db.String(20))
+    personal_numerical_code = db.Column(db.String(13))
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
 
-    def __init__(self, content, user):
-        self.content = content
+    def __init__(self, fields, user):
+        self.series = fields.series
+        self.number = fields.number
+        self.first_name = fields.first_name
+        self.last_name = fields.last_name
+        self.gender = fields.gender
+        self.place_of_birth = fields.place_of_birth
+        self.address = fields.address
+        self.issued_by = fields.issued_by
+        self.issue_date = fields.issue_date
+        self.expiry_date = fields.expiry_date
+        self.nationality = fields.nationality
+        self.personal_numerical_code = fields.personal_numerical_code
         self.user = user
 
     def __repr__(self):
