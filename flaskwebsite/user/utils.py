@@ -11,12 +11,12 @@ def hash_password(password):
 
 
 def validate_username(username):
-    user = User.query.filter_by(username=username.data).first()
+    user = User.query.filter_by(username=username).first()
     return bool(user)
 
 
 def validate_email(email):
-    user = User.query.filter_by(email=email.data).first()
+    user = User.query.filter_by(email=email).first()
     return bool(user)
 
 

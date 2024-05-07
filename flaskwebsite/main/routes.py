@@ -2,7 +2,7 @@ from flask import request, jsonify, Blueprint
 from flask_login import login_required, current_user
 import pytesseract
 from flaskwebsite.models import Data
-from flaskwebsite.main.utils import extract_data
+from flaskwebsite.main.utils import extract_data, format_data
 from PIL import Image
 import io
 from flaskwebsite import db
@@ -27,7 +27,7 @@ def ocr_photo():
         post = Data(fields=fields, user=current_user)
         db.session.add(post)
         db.session.commit()
-        return jsonify({'message': 'OCR success', 'status': 'ok', 'data': ocr_result}), 200
+        return jsonify({'message': 'OCR success', 'status': 'ok', 'data': [{'content': fields, 'created_at': post.created_at.isoformat()}]}), 200
     except Exception as e:
         return jsonify({'message': str(e), 'status': 'error'}), 500
 
@@ -37,7 +37,7 @@ def ocr_photo():
 def send_user_data():
     user = current_user
     if user:
-        user_data = [{'content': data.content, 'created_at': data.created_at.isoformat()} for data in user.data]
+        user_data = [{'content': format_data(data), 'created_at': data.created_at.isoformat()} for data in user.data]
         return jsonify({'message': 'Data fetched successfully', 'status': 'ok', 'data': user_data}), 200
     else:
         return jsonify({'message': 'User not found', 'status': 'error'}), 404

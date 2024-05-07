@@ -1,6 +1,5 @@
 import re
 
-
 def extract_data(ocr_result):
     id_card_data = {
         'series': None,
@@ -16,7 +15,6 @@ def extract_data(ocr_result):
         'nationality': None,
         'personal_numerical_code': None
     }
-
     patterns = {
         'series': r"Serie: (\w+)",
         'number': r"Numar: (\d+)",
@@ -37,4 +35,21 @@ def extract_data(ocr_result):
         if match:
             id_card_data[key] = match.group(1)
 
+    return id_card_data
+
+def format_data(data):
+    id_card_data = {
+        'series': data.series,
+        'number': data.number,
+        'first_name': data.first_name,
+        'last_name': data.last_name,
+        'gender': data.gender,
+        'place_of_birth': data.place_of_birth,
+        'address': data.address,
+        'issued_by': data.issued_by,
+        'issue_date': data.issue_date,
+        'expiry_date': data.expiry_date,
+        'nationality': data.nationality,
+        'personal_numerical_code': data.personal_numerical_code
+    }
     return id_card_data

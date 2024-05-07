@@ -14,7 +14,7 @@ class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
-    password = db.Column(db.String(60), nullable=False)
+    password = db.Column(db.String(64), nullable=False)
     data = db.relationship('Data', backref='user', lazy=True)
     set_password = db.Column(db.Boolean, nullable=False)
     email_confirmed = db.Column(db.Boolean, nullable=False)
@@ -50,18 +50,18 @@ class Data(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
 
     def __init__(self, fields, user):
-        self.series = fields.series
-        self.number = fields.number
-        self.first_name = fields.first_name
-        self.last_name = fields.last_name
-        self.gender = fields.gender
-        self.place_of_birth = fields.place_of_birth
-        self.address = fields.address
-        self.issued_by = fields.issued_by
-        self.issue_date = fields.issue_date
-        self.expiry_date = fields.expiry_date
-        self.nationality = fields.nationality
-        self.personal_numerical_code = fields.personal_numerical_code
+        self.series = fields["series"]
+        self.number = fields["number"]
+        self.first_name = fields["first_name"]
+        self.last_name = fields["last_name"]
+        self.gender = fields["gender"]
+        self.place_of_birth = fields["place_of_birth"]
+        self.address = fields["address"]
+        self.issued_by = fields["issued_by"]
+        self.issue_date = fields["issue_date"]
+        self.expiry_date = fields["expiry_date"]
+        self.nationality = fields["nationality"]
+        self.personal_numerical_code = fields["personal_numerical_code"]
         self.user = user
 
     def __repr__(self):

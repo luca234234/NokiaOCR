@@ -43,7 +43,7 @@ def register():
     user = User(username=username, email=email, password=hashed_password)
     db.session.add(user)
     db.session.commit()
-    send_verification_email(email, username)
+    # send_verification_email(email, username)
     return jsonify({'message': 'User registered successfully', 'status': 'ok'}), 201
 
 
