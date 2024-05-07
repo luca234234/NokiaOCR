@@ -21,12 +21,12 @@ def extract_data(ocr_result):
         'first_name': r"Prenume: ([a-zA-Z]+)",
         'last_name': r"Nume: ([a-zA-Z]+)",
         'gender': r"Sex: ([MF])",
-        'place_of_birth': r"Locul nașterii: ([a-zA-Z]+)",
+        'place_of_birth': r"Locul nasterii: ([a-zA-Z]+)",
         'address': r"Adresa: ([\w, ]+)",
         'issued_by': r"Eliberat de: ([\w ]+)",
-        'issue_date': r"Data eliberării: (\d{2}/\d{2}/\d{4})",
-        'expiry_date': r"Data expirării: (\d{2}/\d{2}/\d{4})",
-        'nationality': r"Naționalitate: ([a-zA-Z]+)",
+        'issue_date': r"Data eliberarii: (\d{2}/\d{2}/\d{4})",
+        'expiry_date': r"Data expirarii: (\d{2}/\d{2}/\d{4})",
+        'nationality': r"Nationalitate: ([a-zA-Z]+)",
         'personal_numerical_code': r"CNP: (\d{13})"
     }
 
