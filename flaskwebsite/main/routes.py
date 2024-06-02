@@ -1,13 +1,13 @@
+import requests
 from flask import request, jsonify, Blueprint
 from flask_login import login_required, current_user
-import pytesseract
 from flaskwebsite.models import Data
-from flaskwebsite.main.utils import extract_data, format_data
-from PIL import Image
-import io
+from flaskwebsite.main.utils import extract_data, format_data, field_mapping
 from flaskwebsite import db
 
 main = Blueprint('main', __name__)
+
+FASTAPI_OCR_URL = 'http://localhost:5036/predict/'
 
 
 @main.route('/ocr-photo', methods=['POST'])
@@ -21,14 +21,20 @@ def ocr_photo():
         return jsonify({'message': 'No photo selected', 'status': 'error'}), 400
 
     try:
-        image = Image.open(io.BytesIO(file.read()))
-        ocr_result = pytesseract.image_to_string(image)
+        files = {'file': (file.filename, file.stream, file.content_type)}
+        response = requests.post(FASTAPI_OCR_URL, files=files)
+
+        if response.status_code != 200:
+            return jsonify({'message': 'OCR failed', 'status': 'error'}), response.status_code
+
+        ocr_result = response.json()
         fields = extract_data(ocr_result)
         post = Data(fields=fields, user=current_user)
         db.session.add(post)
         db.session.commit()
-        return jsonify({'message': 'OCR success', 'status': 'ok', 'data': [{'content': fields, 'created_at': post.created_at.isoformat()}]}), 200
+        return jsonify({'message': 'OCR success', 'status': 'ok', 'data': [{'content': format_data(post), 'created_at': post.created_at.isoformat()}]}), 200
     except Exception as e:
+        print(e)
         return jsonify({'message': str(e), 'status': 'error'}), 500
 
 
@@ -41,3 +47,24 @@ def send_user_data():
         return jsonify({'message': 'Data fetched successfully', 'status': 'ok', 'data': user_data}), 200
     else:
         return jsonify({'message': 'User not found', 'status': 'error'}), 404
+
+
+@main.route('/edit-data/<int:data_id>', methods=['PUT'])
+@login_required
+def edit_data(data_id):
+    data = Data.query.get_or_404(data_id)
+
+    if data.user_id != current_user.id:
+        return jsonify({'message': 'Permission denied', 'status': 'error'}), 403
+
+    fields = request.json
+    try:
+        for req_field, model_field in field_mapping.items():
+            if req_field in fields and fields[req_field]:
+                setattr(data, model_field, fields[req_field])
+
+        db.session.commit()
+        return jsonify({'message': 'Data updated successfully', 'status': 'ok', 'data': format_data(data)}), 200
+    except Exception as e:
+        print(e)
+        return jsonify({'message': str(e), 'status': 'error'}), 500
