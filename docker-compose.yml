@@ -16,8 +16,6 @@ services:
     build: ./nginx
     ports:
       - "80:80"
-    #volumes:
-    # ZIP cu front end si backend
     depends_on:
       - web
 
