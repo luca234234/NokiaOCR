@@ -7,7 +7,7 @@ from flaskwebsite import db
 
 main = Blueprint('main', __name__)
 
-FASTAPI_OCR_URL = 'http://localhost:5036/predict/'
+FASTAPI_OCR_URL = 'http://aiserver:5036/predict/'
 
 
 @main.route('/ocr-photo', methods=['POST'])
@@ -65,6 +65,23 @@ def edit_data(data_id):
 
         db.session.commit()
         return jsonify({'message': 'Data updated successfully', 'status': 'ok', 'data': format_data(data)}), 200
+    except Exception as e:
+        print(e)
+        return jsonify({'message': str(e), 'status': 'error'}), 500
+
+
+@main.route('/delete-data/<int:data_id>', methods=['DELETE'])
+@login_required
+def delete_data(data_id):
+    data = Data.query.get_or_404(data_id)
+
+    if data.user_id != current_user.id:
+        return jsonify({'message': 'Permission denied', 'status': 'error'}), 403
+
+    try:
+        db.session.delete(data)
+        db.session.commit()
+        return jsonify({'message': 'Data deleted successfully', 'status': 'ok'}), 200
     except Exception as e:
         print(e)
         return jsonify({'message': str(e), 'status': 'error'}), 500

@@ -1,0 +1,5 @@
+/nginx/
+/migrations/
+/postgresql/
+/Dockerfile
+/.gitignore

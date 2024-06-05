@@ -58,8 +58,8 @@ class Data(db.Model):
         self.place_of_birth = fields["place_of_birth"]
         self.address = fields["address"]
         self.issued_by = fields["issued_by"]
-        self.issue_date = fields["issue_date"]
-        self.expiry_date = fields["expiry_date"]
+        self.issue_date = datetime.strptime(fields["issue_date"], "%d.%m.%y")
+        self.expiry_date = datetime.strptime(fields["expiry_date"], "%d.%m.%Y")
         self.nationality = fields["nationality"]
         self.personal_numerical_code = fields["personal_numerical_code"]
         self.user = user

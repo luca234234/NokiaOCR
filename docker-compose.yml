@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    depends_on:
+      - db
+      - aiserver
+    volumes:
+      - ./migrations:/usr/src/app/migrations
+
+  aiserver:
+    build: ./aiserver
+
+  nginx:
+    build: ./nginx
+    ports:
+      - "80:80"
+    #volumes:
+    # ZIP cu front end si backend
+    depends_on:
+      - web
+
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: mydatabase
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass
+    volumes:
+      - ./postgresql/data:/var/lib/postgresql/data
+
